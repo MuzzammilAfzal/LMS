@@ -1,8 +1,9 @@
 import express from "express"
-import { searchWithAi } from "../controllers/aiController.js"
+import { aiChat, searchWithAi } from "../controllers/aiController.js"
 
 let aiRouter = express.Router()
 
 aiRouter.post("/search",searchWithAi)
+aiRouter.post("/chat",aiChat)
 
 export default aiRouter

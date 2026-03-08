@@ -74,3 +74,42 @@ Query: ${input}
         console.log(error)
     }
 }
+
+let chatHistory = [
+  {
+    role: "system",
+    content: "You are a helpful AI assistant."
+  }
+];
+
+export const aiChat = async (req,res) => {
+  try {
+
+    const { chatHistory } = req.body;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "openrouter/free",
+        messages: chatHistory,
+      }),
+    });
+
+    const data = await response.json();
+    console.log("AI RESPONSE:", data);
+
+    const aiReply = data.choices[0].message.content;
+
+    res.json({
+      reply: aiReply,
+    });
+
+  } catch (error) {
+    console.error("AI ERROR:", error);
+    res.status(500).json({ error: "AI request failed" });
+  }
+}
