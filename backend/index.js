@@ -22,7 +22,7 @@ app.use(
     credentials: true
   })
 );
-app.options("*", cors());
+
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 app.use("/api/course", courseRouter)
