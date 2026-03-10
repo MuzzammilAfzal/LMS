@@ -25,8 +25,9 @@ import EnrolledCourse from './pages/EnrolledCourse'
 import ViewLecture from './pages/ViewLecture'
 import SearchWithAi from './pages/SearchWithAi'
 import getAllReviews from './customHooks/getAllReviews'
+import CopilotSidebar from './components/CopilotSidebar'
 
-export const serverUrl = import.meta.env.Backend_URL
+export const serverUrl = import.meta.env.VITE_Backend_URL
 
 function App() {
   
@@ -41,10 +42,12 @@ function App() {
     
       <ToastContainer />
       <ScrollToTop/>
+      <CopilotSidebar/>
+      {/* <Route path='/' element={<CopilotSidebar/>}/> */}
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        <Route path='/login' element={<Login/>}/>
-        <Route path='/signup' element={!userData?<SignUp/>:<Navigate to={"/"}/>}/>
+        
+
+        <Route path='/' element={<Home/>}/> 
         <Route path='/profile' element={userData?<Profile/>:<Navigate to={"/signup"}/>}/>
         <Route path='/allcourses' element={userData?<AllCouses/>:<Navigate to={"/signup"}/>}/>
         <Route path='/viewcourse/:courseId' element={userData?<ViewCourse/>:<Navigate to={"/signup"}/>}/>
@@ -56,11 +59,17 @@ function App() {
         
         <Route path='/dashboard' element={userData?.role === "educator"?<Dashboard/>:<Navigate to={"/signup"}/>}/>
         <Route path='/courses' element={userData?.role === "educator"?<Courses/>:<Navigate to={"/signup"}/>}/>
+
+       
+
+
         <Route path='/addcourses/:courseId' element={userData?.role === "educator"?<AddCourses/>:<Navigate to={"/signup"}/>}/>
         <Route path='/createcourses' element={userData?.role === "educator"?<CreateCourse/>:<Navigate to={"/signup"}/>}/>
         <Route path='/createlecture/:courseId' element={userData?.role === "educator"?<CreateLecture/>:<Navigate to={"/signup"}/>}/>
         <Route path='/editlecture/:courseId/:lectureId' element={userData?.role === "educator"?<EditLecture/>:<Navigate to={"/signup"}/>}/>
         <Route path='/forgotpassword' element={<ForgotPassword/>}/>
+        <Route path='/login' element={<Login/>}/>
+        <Route path='/signup' element={!userData?<SignUp/>:<Navigate to={"/"}/>}/>
          </Routes>
 
          </>
