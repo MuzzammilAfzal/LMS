@@ -35,8 +35,9 @@ app.get("/" , (req,res)=>{
     res.send("Hello From Server")
 })
 
-app.listen(port , ()=>{
+connectDb().then(() => {
+  app.listen(process.env.PORT, () => {
     console.log("Server Started")
-    connectDb()
+  })
 })
 
