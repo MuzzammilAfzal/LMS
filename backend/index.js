@@ -15,9 +15,14 @@ let port = process.env.PORT
 let app = express()
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({origin:"https://api-lms-rose.vercel.app/",
-    methods:["GET","POST","PUT","DELETE"],credentials:true
-}))
+app.use(
+  cors({
+    origin: "https://e-learning-platform-pink.vercel.app",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true
+  })
+);
+app.options("*", cors());
 app.use("/api/auth", authRouter)
 app.use("/api/user", userRouter)
 app.use("/api/course", courseRouter)
