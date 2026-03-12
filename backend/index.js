@@ -15,9 +15,23 @@ let port = process.env.PORT
 let app = express()
 app.use(express.json())
 app.use(cookieParser())
+const allowedOrigins = [
+  process.env.CLIENT_URL || "https://e-learning-platform-pink.vercel.app",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://localhost:3000",
+  "http://127.0.0.1:3000"
+]
+
 app.use(
   cors({
-    origin: "https://e-learning-platform-pink.vercel.app",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true)
+      } else {
+        callback(new Error("CORS policy: Origin not allowed"))
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
   })
