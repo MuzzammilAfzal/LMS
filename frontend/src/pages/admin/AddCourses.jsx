@@ -33,7 +33,7 @@ function AddCourses() {
 
     const getCourseById = async () => {
       try {
-        const result = await axios.get(serverUrl + `/api/course/getcourse/${courseId}` , {withCredentials:true})
+        const result = await axios.get(serverUrl + `/api/course/getcourse/${courseId}` , {withCredentials:true, headers: { "Content-Type": "multipart/form-data" }})
           setSelectedCourse(result.data)
           console.log(result)
         
@@ -77,14 +77,16 @@ const editCourseHandler = async () => {
   formData.append("category", category);
   formData.append("level", level);
   formData.append("price", price);
+  if (backendImage) {
   formData.append("thumbnail", backendImage);
+   }
   formData.append("isPublished", isPublished);
 
   try {
     const result = await axios.post(
       `${serverUrl}/api/course/editcourse/${courseId}`,
       formData,
-      { withCredentials: true }
+      { withCredentials: true ,headers: { "Content-Type": "multipart/form-data" }}
     );
 
     const updatedCourse = result.data;
@@ -115,7 +117,7 @@ const editCourseHandler = async () => {
   const removeCourse = async () => {
     setLoading(true)
     try {
-      const result = await axios.delete(serverUrl + `/api/course/removecourse/${courseId}` , {withCredentials:true})
+      const result = await axios.delete(serverUrl + `/api/course/removecourse/${courseId}` , {withCredentials:true,headers: { "Content-Type": "multipart/form-data" }})
       toast.success("Course Deleted")
        const filteredCourses = courseData.filter(c => c._id !== courseId);
       dispatch(setCourseData(filteredCourses));
