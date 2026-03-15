@@ -23,22 +23,45 @@ function EditLecture() {
     formData.append("videoUrl",videoUrl)
     formData.append("isPreviewFree",isPreviewFree)
     
+     const uploadVideoToCloudinary = async (file) => {
+           const formData = new FormData()
+            formData.append("file", file)
+            formData.append("upload_preset", "lms_upload")
+          const res = await axios.post(
+               "https://api.cloudinary.com/v1_1/dwpppomna/video/upload",
+            formData
+           )
+            return res.data.secure_url
+         }     
 
     const editLecture = async () => {
-      setLoading(true)
       try {
-        const result = await axios.post(serverUrl + `/api/course/editlecture/${lectureId}` , formData , {withCredentials:true})
-        console.log(result.data)
-        dispatch(setLectureData([...lectureData,result.data]))
-        toast.success("Lecture Updated")
-        navigate("/courses")
-        setLoading(false)
-      } catch (error) {
-        console.log(error)
-        toast.error(error.response.data.message)
-        setLoading(false)
-      }
-    }
+    setLoading(true)
+    // 1️⃣ upload video to cloudinary
+    let uploadedVideoUrl = null
+           if(videoUrl){
+             uploadedVideoUrl = await uploadVideoToCloudinary(videoUrl)
+         }
+    // 2️⃣ send URL to backend
+    const result = await axios.post(
+      serverUrl + `/api/course/editlecture/${lectureId}`,
+      {
+        lectureTitle,
+        videoUrl: uploadedVideoUrl,
+        isPreviewFree
+      },
+      {withCredentials:true}
+    )
+    dispatch(setLectureData([...lectureData,result.data]))
+    toast.success("Lecture Updated")
+    navigate("/courses")
+  } catch (error) {
+    console.log(error)
+    toast.error("Lecture update failed")
+  } finally {
+    setLoading(false)
+  }
+}
 
     const removeLecture = async () => {
       setLoading1(true)

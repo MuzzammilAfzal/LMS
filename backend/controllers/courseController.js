@@ -161,29 +161,38 @@ export const getCourseLecture = async (req,res) => {
 }
 
 export const editLecture = async (req,res) => {
-    try {
-        const {lectureId} = req.params
-        const {isPreviewFree , lectureTitle} = req.body
-        const lecture = await Lecture.findById(lectureId)
-          if(!lecture){
-            return res.status(404).json({message:"Lecture not found"})
-        }
-        let videoUrl
-        if(req.file){
-            videoUrl =await uploadOnCloudinary(req.file.buffer)
-            lecture.videoUrl = videoUrl
-                }
-        if(lectureTitle){
-            lecture.lectureTitle = lectureTitle
-        }
-        lecture.isPreviewFree = isPreviewFree
-        
-         await lecture.save()
-        return res.status(200).json(lecture)
-    } catch (error) {
-        return res.status(500).json({message:`Failed to edit Lectures ${error}`})
+
+  try {
+
+    const {lectureId} = req.params
+    const {videoUrl , lectureTitle , isPreviewFree} = req.body
+
+    const lecture = await Lecture.findById(lectureId)
+
+    if(!lecture){
+      return res.status(404).json({message:"Lecture not found"})
     }
-    
+
+    if(videoUrl){
+      lecture.videoUrl = videoUrl
+    }
+
+    if(lectureTitle){
+      lecture.lectureTitle = lectureTitle
+    }
+
+    lecture.isPreviewFree = isPreviewFree
+
+    await lecture.save()
+
+    return res.status(200).json(lecture)
+
+  } catch (error) {
+
+    return res.status(500).json({message:"Failed to edit lecture"})
+
+  }
+
 }
 
 export const removeLecture = async (req,res) => {
