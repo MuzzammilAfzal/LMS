@@ -170,7 +170,7 @@ export const editLecture = async (req,res) => {
         }
         let videoUrl
         if(req.file){
-            videoUrl =await uploadOnCloudinary(req.file.path)
+            videoUrl =await uploadOnCloudinary(req.file.buffer)
             lecture.videoUrl = videoUrl
                 }
         if(lectureTitle){
