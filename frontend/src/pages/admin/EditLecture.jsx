@@ -18,10 +18,7 @@ function EditLecture() {
     const [lectureTitle,setLectureTitle] = useState(selectedLecture.lectureTitle)
     const [isPreviewFree,setIsPreviewFree] = useState(false)
 
-    const formData = new FormData()
-    formData.append("lectureTitle",lectureTitle)
-    formData.append("videoUrl",videoUrl)
-    formData.append("isPreviewFree",isPreviewFree)
+ 
     
      const uploadVideoToCloudinary = async (file) => {
            const formData = new FormData()
