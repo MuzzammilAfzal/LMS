@@ -1,14 +1,8 @@
 import multer from "multer";
 
-let storage = multer.diskStorage({
-    destination:(req,file,cb)=>{
-        cb(null,"./public")
-    },
-    filename:(req,file,cb)=>{
-        cb(null,file.originalname)
-    }
-})
+// use memory storage instead of disk
+const storage = multer.memoryStorage();
 
-const upload = multer({storage})
+const upload = multer({ storage });
 
-export default upload
+export default upload;

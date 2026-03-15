@@ -73,7 +73,10 @@ export const editCourse = async (req,res) => {
         const updateData = {title , subTitle , description , category , isPublished}
         if(level && level !== "") updateData.level = level
         if(price && price !== "") updateData.price = Number(price)
-        if(thumbnail) updateData.thumbnail = thumbnail
+        if (req.file) {
+        const result = await uploadOnCloudinary(req.file.buffer);
+        updateData.thumbnail = result.secure_url;
+        }
 
         course = await Course.findByIdAndUpdate(courseId , updateData , {new:true})
         return res.status(201).json(course)
