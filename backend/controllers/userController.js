@@ -20,7 +20,7 @@ export const UpdateProfile = async (req,res) => {
         const {name , description} = req.body
         let photoUrl
         if(req.file){
-           photoUrl =await uploadOnCloudinary(req.file.path)
+           photoUrl =await uploadOnCloudinary(req.file.buffer)
         }
         const user = await User.findByIdAndUpdate(userId,{name,description,photoUrl})
 

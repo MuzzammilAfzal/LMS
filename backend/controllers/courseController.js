@@ -64,7 +64,7 @@ export const editCourse = async (req,res) => {
         }
         let thumbnail
          if(req.file){
-            thumbnail =await uploadOnCloudinary(req.file.path)
+            thumbnail =await uploadOnCloudinary(req.file.buffer)
                 }
         let course = await Course.findById(courseId)
         if(!course){
@@ -81,6 +81,7 @@ export const editCourse = async (req,res) => {
         course = await Course.findByIdAndUpdate(courseId , updateData , {new:true})
         return res.status(201).json(course)
     } catch (error) {
+        console.log(error)
         return res.status(500).json({message:`Failed to update course ${error}`})
     }
 }

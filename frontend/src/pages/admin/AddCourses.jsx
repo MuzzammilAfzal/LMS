@@ -81,10 +81,15 @@ const editCourseHandler = async () => {
   formData.append("isPublished", isPublished);
 
   try {
+    console.log([...formData.entries()])
     const result = await axios.post(
       `${serverUrl}/api/course/editcourse/${courseId}`,
       formData,
-      { withCredentials: true }
+      { withCredentials: true,
+         headers: {
+      "Content-Type": "multipart/form-data"
+        }
+       }
     );
 
     const updatedCourse = result.data;
