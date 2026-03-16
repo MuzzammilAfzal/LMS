@@ -26,7 +26,9 @@ function EditLecture() {
             formData.append("upload_preset", "lms_upload")
           const res = await axios.post(
                "https://api.cloudinary.com/v1_1/dwpppomna/video/upload",
-            formData
+            formData,{
+              headers: {"Content-Type": "multipart/form-data"}
+            }
            )
             return res.data.secure_url
          }     
